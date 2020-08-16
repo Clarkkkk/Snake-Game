@@ -316,7 +316,7 @@ function run(status) {
 
   const board = new Board(document.querySelector('main'));
   const bgm = new Audio('sound/sewer-funk.mp3', true);
-  bgm.play();
+  
   const failSound = new Audio('sound/fail.mp3');
 
   body.addEventListener('failed', () => {
@@ -328,6 +328,7 @@ function run(status) {
   });
 
   function clickStart(event) {
+    bgm.play();
     if (board.status !== 'running') {
       board.run();
       body.addEventListener('keyup', divert);
