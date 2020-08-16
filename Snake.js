@@ -10,8 +10,8 @@ class Board {
     this.width = (this.board.clientWidth + 1) / (this.cellSize + this.gapSize);
     this.height = (this.board.clientHeight + 1) / (this.cellSize + this.gapSize);
     this.score = 0;
-    this.snake = new Snake(Math.floor(this.width / 2), this.height - 1, this.board);
-    this.apple = new Apple(Math.floor(this.width / 2), this.height - 10);
+    this.snake = new Snake(Math.floor(this.width / 2), this.height - 10, this.board);
+    this.apple = new Apple(Math.floor(this.width / 2), this.height - 20);
     this.sound = {
       eat: new Audio('sound/eat.mp3'),
       crash: new Audio('sound/crash.mp3'),
@@ -357,7 +357,6 @@ function run(status) {
       event.target.innerHTML = '声音：关';
       Audio.disabled = true;
       bgm.stop();
-      console.log('stop');
     } else {
       event.target.innerHTML = '声音：开';
       Audio.disabled = false;
@@ -387,4 +386,4 @@ function run(status) {
   }
 }
 
-run();
+window.onload = run;
