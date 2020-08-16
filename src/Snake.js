@@ -52,8 +52,8 @@ class Board {
     this.interval = this.difficulty[0];
     this.status = '';
     document.querySelector('#fail').style.visibility = 'hidden';
-    this.snake.init(Math.floor(this.width / 2), this.height - 10);
-    this.apple.move(Math.floor(this.width / 2), this.height - 20);
+    this.snake.init(Math.floor(this.width / 2), this.height - 5);
+    this.apple.move(Math.floor(this.width / 2), this.height - 10);
   }
 
   run() {
