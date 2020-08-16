@@ -2,16 +2,16 @@ class Board {
   constructor() {
     this.board = this.constructor.boardElem();
     this.intervalID = 0;
-    this.difficulty = [150, 100, 70, 60, 50, 40, 30];
+    this.difficulty = [200, 150, 120, 100, 85, 70];
     this.interval = this.difficulty[0];
     this.status = '';
-    this.cellSize = 10;
+    this.cellSize = 20;
     this.gapSize = 1;
     this.width = (this.board.clientWidth + 1) / (this.cellSize + this.gapSize);
     this.height = (this.board.clientHeight + 1) / (this.cellSize + this.gapSize);
     this.score = 0;
-    this.snake = new Snake(Math.floor(this.width / 2), this.height - 10, this.board);
-    this.apple = new Apple(Math.floor(this.width / 2), this.height - 20);
+    this.snake = new Snake(Math.floor(this.width / 2), this.height - 5, this.board);
+    this.apple = new Apple(Math.floor(this.width / 2), this.height - 10);
     this.sound = {
       eat: new Audio('sound/eat.mp3'),
       crash: new Audio('sound/crash.mp3'),
@@ -20,8 +20,21 @@ class Board {
   }
 
   set score(num) {
-    this._score = num;
-    document.querySelector('#scores').innerHTML = '分数<br>' + num;
+    if (num > 0) {
+      let fraction = (num - this._score) / 10;
+      let id = setInterval(() => {
+        this._score += fraction;
+        document.querySelector('#scores').innerHTML = '分数<br>' + Math.floor(this._score);
+        if (num - this._score < 10) {
+          clearInterval(id);
+          this._score = num;
+          document.querySelector('#scores').innerHTML = '分数<br>' + num;
+        }
+      }, 40);
+    } else {
+      this._score = num;
+      document.querySelector('#scores').innerHTML = '分数<br>' + num;
+    }
   }
 
   get score() {
@@ -39,8 +52,8 @@ class Board {
     this.interval = this.difficulty[0];
     this.status = '';
     document.querySelector('#fail').style.visibility = 'hidden';
-    this.snake.init(Math.floor(this.width / 2), this.height - 1);
-    this.apple.move(Math.floor(this.width / 2), this.height - 10);
+    this.snake.init(Math.floor(this.width / 2), this.height - 10);
+    this.apple.move(Math.floor(this.width / 2), this.height - 20);
   }
 
   run() {
@@ -68,11 +81,12 @@ class Board {
     const result = this.snake.move(this.snake.dir, obstacle);
     if (result) {
       if (this.apple.isEaten) {
+        this.sound.eat.stop();
         this.sound.eat.play();
         const random = this.randomApple();
         this.apple.move(random.x, random.y);
-        this.score++;
-        setTimeout(() => this.speed(), 10);
+        this.score += Math.floor(50000 / this.interval);
+        this.speed();
       }
     } else {
       this.fail();
@@ -82,9 +96,10 @@ class Board {
   speed() {
     const accelerate = (newInterval) => {
       clearInterval(this.intervalID);
+      this.interval = newInterval;
       this.intervalID = setInterval(() => {
         this.step();
-      }, newInterval);
+      }, this.interval);
       this.sound.speed.play();
     };
 
@@ -95,17 +110,14 @@ class Board {
       case 10:
         accelerate(this.difficulty[2]);
         break;
-      case 15:
+      case 20:
         accelerate(this.difficulty[3]);
         break;
-      case 20:
+      case 35:
         accelerate(this.difficulty[4]);
         break;
-      case 27:
+      case 50:
         accelerate(this.difficulty[5]);
-        break;
-      case 40:
-        accelerate(this.difficulty[6]);
         break;
     }
   }
@@ -122,6 +134,7 @@ class Board {
     let isSelf = false;
     let random = {};
     do {
+      isSelf = false;
       random.x = generateRandom(1, this.width);
       random.y = generateRandom(1, this.height);
       for (const cell of this.snake) {
