@@ -10,16 +10,17 @@ body {
 }
 
 main {
-  margin: 1rem auto;
+  margin: 0 auto;
   width: 800px;
   display: grid;
-  grid-template-rows: 100px 300px 119px 40px 20px;
+  grid-template-rows: 120px 300px 119px 40px 20px;
   grid-template-columns: 1fr 629px 1fr;
   align-items: center;
   justify-items: center;
 }
 
 h1 {
+  font-size: 3rem;
   margin: 0;
   grid-column: 1 / 4;
   grid-row: 1 / 2;

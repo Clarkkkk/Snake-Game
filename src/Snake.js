@@ -71,7 +71,7 @@ class Board {
   fail() {
     this.pause();
     this.status = 'failed';
-    createEvents('failed');
+    setTimeout(() => createEvents('failed'), 500);
   }
 
   step() {
@@ -156,12 +156,13 @@ class Board {
       return this.apple;
     } else if (next.x <= 0 || next.x > this.width ||
       next.y <= 0 || next.y > this.height) {
+      this.sound.crash.play();
       return 'wall';
     } else {
       for (const cell of this.snake) {
         if (cell !== this.snake.tail &&
          cell.location.x === next.x && cell.location.y === next.y) {
-          console.log('selg');
+          this.sound.crash.play();
           return cell;
         }
       }
