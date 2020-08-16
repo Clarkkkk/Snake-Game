@@ -13,9 +13,9 @@ class Board {
     this.snake = new Snake(Math.floor(this.width / 2), this.height - 10, this.board);
     this.apple = new Apple(Math.floor(this.width / 2), this.height - 20);
     this.sound = {
-      eat: new Audio('sound/eat.mp3'),
-      crash: new Audio('sound/crash.mp3'),
-      speed: new Audio('sound/speed.mp3')
+      eat: new Audio('../sound/eat.mp3'),
+      crash: new Audio('../sound/crash.mp3'),
+      speed: new Audio('../sound/speed.mp3')
     };
   }
 
@@ -273,7 +273,7 @@ class Control {
   constructor(elemSelector, clickHandler) {
     this.element = document.querySelector(elemSelector);
     this.handler = clickHandler;
-    this._sound = new Audio('sound/click.mp3');
+    this._sound = new Audio('../sound/click.mp3');
     this._soundHandler = () => {
       this._sound.stop();
       this._sound.play();
@@ -315,9 +315,9 @@ function run(status) {
   const body = document.documentElement;
 
   const board = new Board(document.querySelector('main'));
-  const bgm = new Audio('sound/sewer-funk.mp3', true);
+  const bgm = new Audio('../sound/sewer-funk.mp3', true);
   
-  const failSound = new Audio('sound/fail.mp3');
+  const failSound = new Audio('../sound/fail.mp3');
 
   body.addEventListener('failed', () => {
     start.disable();

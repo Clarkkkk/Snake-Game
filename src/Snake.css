@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "FZXS16";
+  src: url("../fonts/FZXIANGSU16.TTF") format("truetype");
+}
+
 body {
   font-size: 14px;
   font-family: "FZXS16", monospace;
