@@ -85,7 +85,7 @@ class Board {
         this.sound.eat.play();
         const random = this.randomApple();
         this.apple.move(random.x, random.y);
-        this.score += Math.floor(50000 / this.interval);
+        this.score += Math.floor(this.snake.length * 10000 / this.interval);
         this.speed();
       }
     } else {
@@ -284,7 +284,7 @@ class Audio {
 Audio.disabled = false;
 
 class Control {
-  constructor(elemSelector, clickHandler) {
+  constructor(elemSelector, clickHandler, enable = true) {
     this.element = document.querySelector(elemSelector);
     this.handler = clickHandler;
     this._sound = new Audio('sound/click.mp3');
@@ -292,7 +292,11 @@ class Control {
       this._sound.stop();
       this._sound.play();
     };
-    this.enable();
+    if (enable) {
+      this.enable();
+    } else {
+      this.disable();
+    }
   }
 
   get classList() {
@@ -306,7 +310,7 @@ class Control {
   }
 
   enable() {
-    this.element.addEventListener('click', this._soundHandler);
+    this.element.addEventListener('mousedown', this._soundHandler);
     this.element.addEventListener('click', this.handler);
     this.element.classList.remove('disabled');
   }
@@ -322,7 +326,7 @@ function createEvents(type, detail) {
 
 function run(status) {
   const start = new Control('#start', clickStart);
-  const restart = new Control('#restart', clickRestart);
+  const restart = new Control('#restart', clickRestart, false);
   const soundControl = new Control('#sound-control', clickSoundControl);
 
   const failDiv = document.querySelector('#fail');
